@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_list_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
@@ -63,3 +63,20 @@ def create_student(request):
         form = StudentForm()
 
     return render(request, 'core/create_student.html', {'form': form})
+
+# Student Management Update view
+@login_required
+def update_student(request, pk):
+    student = get_object_or_404(Student, pk=pk)
+    if request.method == 'POST':
+        form = StudentForm(request.POST, request.FILES, instance=student)
+        if form.is_valid():
+            form.save()
+            return redirect('core:student_list')
+    else:
+        form = StudentForm(instance=student)
+    
+    return render(request, 'core/update_student.html', {'form': form})
+
+
+         
