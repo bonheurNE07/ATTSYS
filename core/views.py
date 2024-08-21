@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 
-from .forms import StudentForm, EmployeeForm
+from .forms import StudentForm, EmployeeForm, RFIDCardForm
 from .models import Student, Employee, User, RFIDCard
 
 # Build the view for User registration (for HOD to create Employee accounts)
@@ -127,3 +127,17 @@ def delet_employee(request, pk):
     
     return render(request, 'core/delete_employee.html', {'employee': employee})
 
+# RFID Card Management Views (Assign, Update, Delete)
+
+# RFID Card Management Assign View
+@login_required
+def assign_rfid(request):
+    if request.method == 'POST':
+        form = RFIDCardForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "RFID Card assigned successfully!")
+            return redirect('core:assign_rfid')
+        else:
+            form = RFIDCard()
+        return render(request, 'core/assign_rfid.html', {'form': form})
