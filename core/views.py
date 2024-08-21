@@ -88,3 +88,18 @@ def delete_student(request, pk):
     
     return render(request, 'core/delete_student.html', {'student': student})
          
+# Employee Management views (Create, Upate, Delete)
+
+# Employee Management Create View
+@login_required
+def create_employee(request):
+    if request.methode == 'POST':
+       form = EmployeeForm(request.POST, request.FILES)
+       if form.is_valid():
+           form.save()
+           return redirect('core:employee_list')
+    else:
+        form = EmployeeForm()
+
+    return render(request, 'core/create_employee.html', {'form': form})
+ 
