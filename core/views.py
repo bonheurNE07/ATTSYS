@@ -78,5 +78,13 @@ def update_student(request, pk):
     
     return render(request, 'core/update_student.html', {'form': form})
 
-
+# Student Management Delete view
+@login_required
+def delete_student(request, pk):
+    student = get_object_or_404(Student, pk=pk)
+    if request.method == 'POST':
+        student.delete()
+        return redirect('core:student_list')
+    
+    return render(request, 'core/delete_student.html', {'student': student})
          
