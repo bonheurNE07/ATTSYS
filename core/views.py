@@ -116,3 +116,14 @@ def update_employee(request, pk):
         form = EmployeeForm(instance=employee)
     
     return render(request, 'core/update_employee.html', {'form': form})
+
+# Employee Management Delete View
+@login_required
+def delet_employee(request, pk):
+    employee = get_object_or_404(Employee, pk=pk)
+    if request.method == 'POST':
+        employee.delete()
+        return redirect('core:employee_list')
+    
+    return render(request, 'core/delete_employee.html', {'employee': employee})
+
