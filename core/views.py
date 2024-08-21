@@ -141,3 +141,18 @@ def assign_rfid(request):
         else:
             form = RFIDCard()
         return render(request, 'core/assign_rfid.html', {'form': form})
+
+# RFID Card Management Update view
+@login_required
+def update_rfid(request, pk):
+    rfid_card = get_object_or_404(RFIDCard, pk=pk)
+    if request.method == 'POST':
+        form = RFIDCardForm(request.POST, instance=rfid_card)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "RFID Card updated successfully!")
+            return redirect('core:update_rfid', pk=pk)
+    else:
+        form = RFIDCardForm(instance=rfid_card)
+
+    return render(request, 'core/update_rfid.html', {'form': form})
