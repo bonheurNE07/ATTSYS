@@ -103,3 +103,16 @@ def create_employee(request):
 
     return render(request, 'core/create_employee.html', {'form': form})
  
+# Employee Management Update View
+@login_required
+def update_employee(request, pk):
+    employee = get_object_or_404(Employee, pk=pk)
+    if request.method == 'POST':
+        form = EmployeeForm(request.POST, request.FILES, instance=employee)
+        if form.is_valid():
+            form.save()
+            return redirect('core:employee_list')
+    else:
+        form = EmployeeForm(instance=employee)
+    
+    return render(request, 'core/update_employee.html', {'form': form})
