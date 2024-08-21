@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="container">
-        <h2>Update RFID Card - {{ rfid_card.rfid_card }}</h2>
+        <h2>Update RFID Card - {{ rfid_card.card_rfid }}</h2>
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
