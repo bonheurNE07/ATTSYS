@@ -155,4 +155,15 @@ def update_rfid(request, pk):
     else:
         form = RFIDCardForm(instance=rfid_card)
 
-    return render(request, 'core/update_rfid.html', {'form': form})
+    return render(request, 'core/update_rfid.html', {'form': form, 'rfid_card': rfid_card})
+
+# RFID Card Management Delete View
+@login_required
+def delete_rfid(request, pk):
+    rfid_card = get_object_or_404(RFIDCard, pk=pk)
+    if request.method == 'POST':
+        rfid_card.delete()
+        messages.success(request, "RFID Card deleted successfully!")
+        
+        return redirect('core:rfid_list') 
+    return render(request, 'core/delete_rfid.html', {'rfid_card': rfid_card})
