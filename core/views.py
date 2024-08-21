@@ -52,3 +52,14 @@ def logout_view(request):
     logout(request)
     return redirect('core:login')
 
+# Student Management Views (Create, Update and Delete)
+def create_student(request):
+    if request.method == 'POST':
+        form = StudentForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('core:student_list')
+    else:
+        form = StudentForm()
+
+    return render(request, 'core/create_student.html', {'form': form})
