@@ -45,3 +45,10 @@ def login_view(request):
         form = AuthenticationForm()
     
     return render(request, 'core/login.html', {'form': form})
+
+# Logout View
+@login_required
+def logout_view(request):
+    logout(request)
+    return redirect('core:login')
+
