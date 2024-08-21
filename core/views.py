@@ -24,4 +24,24 @@ def registration_employee(request):
             form = EmployeeForm()
         
         return render(request, 'core/register_employee.html', {'form': form})
+
+# Login View
+def login_view(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+
+            if user is not None:
+                login(request, user)
+                return redirect('core:home')
+            else:
+                messages.error(request, "Invaid username or password.")
+        else:
+            messages.error(request, "Invalid username or paswod.")
+    else:
+        form = AuthenticationForm()
     
+    return render(request, 'core/login.html', {'form': form})
