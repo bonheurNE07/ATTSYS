@@ -134,3 +134,40 @@ class EmployeeForm(forms.ModelForm):
         if commit:
             employee.save()
         return employee
+    
+class RFIDCardForm(forms.ModelForm):
+    class Meta:
+        model = RFIDCard
+        fields = ['card_id', 'student', 'employee']
+        labels = {
+            'card_id': 'RFID Card ID',
+            'student': 'Assign to Student',
+            'employee': 'Assign to Employee',
+        }
+        help_texts = {
+            'card_id': 'Enter the unique RFID card ID.',
+            'student': 'Select a student to assign this card to.',
+            'employee': 'Select an employee to assign this card to.',
+        }
+        widgets = {
+            'card_id': forms.TextInput(attrs={'placeholder': 'e.g., 1234567890'}),
+            'student': forms.Select(attrs={'placeholder': 'Select Student'}),
+            'employee': forms.Select(attrs={'placeholder': 'Select Employee'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(RFIDCardForm, self).__init__(*args, **kwargs)
+        self.fields['student'].queryset = Student.objects.filter(rfidcard__isnull=True)
+        self.fields['employee'].queryset = Employee.objects.filter(rfidcard__isnull=True)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        student = cleaned_data.get('student')
+        employee = cleaned_data.get('employee')
+
+        if student and employee:
+            raise forms.ValidationError("RFID Card cannot be assigned to both a student and an employee.")
+        if not student and not employee:
+            raise forms.ValidationError("RFID Card must be assigned to either a student or an employee.")
+        
+        return cleaned_data
