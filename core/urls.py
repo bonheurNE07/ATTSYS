@@ -4,6 +4,8 @@ from . import views
 app_name = 'core'
 
 urlpatterns = [
+    path('', views.home, name='home'),
+
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('register-employee/', views.registration_employee, name='register_employee'),
@@ -14,9 +16,12 @@ urlpatterns = [
 
     path('employees/create/', views.create_employee, name='create_employee'),
     path('employees/update/<int:pk>/', views.update_employee, name='update_employee'),
-    path('employees/delete/<int:pk>/', views.delet_employee, name='delete_employee'),
+    path('employees/delete/<int:pk>/', views.delete_employee, name='delete_employee'),
 
     path('rfid/assign/', views.assign_rfid, name='assign_rfid'),
     path('rfid/update/<int:pk>/', views.update_rfid, name='update_rfid'),
     path('rfid/delete/<int:pk>/', views.delete_rfid, name='delete_rfid'),
+
+    path('hod_dashboard/', views.hod_dashboard, name='hod_dashboard'),
+    path('lecturer_dashboard/', views.lecturer_dashboard, name='lecturer_dashboard'),
 ]
