@@ -13,3 +13,8 @@ class AttendanceRecordListView(ListView):
     def get_queryset(self):
         # Customize the queryset to filter by user roles if needed
         return AttendanceRecord.objects.all().order_by('-date')
+
+class AttendanceRecordDetailView(DetailView):
+    model = AttendanceRecord
+    template_name = 'attendance/attendance_record_detail.html'
+    context_object_name = 'attendance_record'
