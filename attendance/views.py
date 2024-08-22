@@ -29,3 +29,13 @@ class AttendanceRecordCreateView(CreateView):
 
     def form_valid(self, form):
         return super().form_valid(form)
+
+# Update view for an existing attendance record
+class AttendanceRecordUpdateView(UpdateView):
+    model = AttendanceRecord
+    form_class = AttendanceRecordForm
+    template_name = 'attendance/attendance_record_form.html'
+    success_url = reverse_lazy('attendance:attendance_record_list')
+
+    def form_valid(self, form):
+        return super().form_valid(form)
