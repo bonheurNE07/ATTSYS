@@ -39,3 +39,9 @@ class AttendanceRecordUpdateView(UpdateView):
 
     def form_valid(self, form):
         return super().form_valid(form)
+
+# Delete view for an attendance record
+class AttendanceRecordDeleteView(DeleteView):
+    model = AttendanceRecord
+    template_name = 'attendance/attendance_record_confirm_delete.html'
+    success_url = reverse_lazy('attendance:attendance_record_list')
