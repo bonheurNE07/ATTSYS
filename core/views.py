@@ -250,3 +250,13 @@ def lecturer_dashboard(request):
         'attendance_records': attendance_records,
     }
     return render(request, 'core/dashboard/lecturer_dashboard.html', context)
+
+@login_required
+def home(request):
+    if request.user.user_type == 1:  # HOD
+        return redirect('core:hod_dashboard')
+    elif request.user.user_type == 2:  # Lecturer
+        return redirect('core:lecturer_dashboard')
+    else:
+        # Redirect students or employees to their respective dashboards or a default page
+        return render(request, 'core/home.html')
