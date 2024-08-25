@@ -15,14 +15,14 @@
     <tbody>
         {% for enrollment in enrollments %}
         <tr>
-            <td>{{ enrollment.student.user.username }}</td>
-            <td>{{ enrollment.course.name }}</td>
+            <td>{{ enrollment.student }}</td>
+            <td>{{ enrollment.course }}</td>
             <td>{{ enrollment.enrollment_date }}</td>
-            <td>{{ enrollment.get_completion_status_display }}</td>
+            <td>{{ enrollment.completion_status }}</td>
             <td>
                 <a href="{% url 'students:edit_enrollment' enrollment.id %}">Edit</a> |
                 <a href="{% url 'students:delete_enrollment' enrollment.id %}">Delete</a> |
-                <a href="{% url 'students:student_enrollment_detail' enrollment.student.id %}">Details</a>
+                <a href="{% url 'students:student_enrollment_detail' enrollment.student.id %}">View Details</a>
             </td>
         </tr>
         {% endfor %}

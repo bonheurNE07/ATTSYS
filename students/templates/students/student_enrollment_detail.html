@@ -1,7 +1,7 @@
 {% extends 'core/base.html' %}
 
 {% block content %}
-<h2>{{ student.user.username }}'s Enrollments</h2>
+<h2>{{ student.user.username }}'s Enrollment Details</h2>
 <table>
     <thead>
         <tr>
@@ -13,9 +13,9 @@
     <tbody>
         {% for enrollment in enrollments %}
         <tr>
-            <td>{{ enrollment.course.name }}</td>
+            <td>{{ enrollment.course }}</td>
             <td>{{ enrollment.enrollment_date }}</td>
-            <td>{{ enrollment.get_completion_status_display }}</td>
+            <td>{{ enrollment.completion_status }}</td>
         </tr>
         {% endfor %}
     </tbody>

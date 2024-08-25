@@ -1,11 +1,11 @@
 {% extends 'core/base.html' %}
 
 {% block content %}
-<h2>{% if enrollment %}Edit Enrollment{% else %}Add Enrollment{% endif %}</h2>
+<h2>Edit Enrollment</h2>
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">{% if enrollment %}Update{% else %}Add{% endif %} Enrollment</button>
+    <button type="submit">Update Enrollment</button>
 </form>
 <a href="{% url 'students:enrollment_list' %}">Back to Enrollment List</a>
 {% endblock %}
