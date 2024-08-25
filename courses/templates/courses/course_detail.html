@@ -1,0 +1,16 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<h2>{{ course.name }} ({{ course.code }})</h2>
+<p><strong>Description:</strong> {{ course.description }}</p>
+<p><strong>Credits:</strong> {{ course.credits }}</p>
+<p><strong>Lecturer:</strong> {{ course.lecturer.get_full_name }}</p>
+
+<a href="{% url 'courses:course_update' course.id %}" class="btn btn-warning">Edit Course</a>
+<a href="{% url 'courses:course_list' %}" class="btn btn-secondary">Back to Courses</a>
+
+<form action="{% url 'courses:course_delete' course.id %}" method="post" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Delete Course</button>
+</form>
+{% endblock %}
