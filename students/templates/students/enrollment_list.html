@@ -1,0 +1,32 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h2>Enrollment List</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Student</th>
+            <th>Course</th>
+            <th>Enrollment Date</th>
+            <th>Completion Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for enrollment in enrollments %}
+        <tr>
+            <td>{{ enrollment.student.user.username }}</td>
+            <td>{{ enrollment.course.name }}</td>
+            <td>{{ enrollment.enrollment_date }}</td>
+            <td>{{ enrollment.get_completion_status_display }}</td>
+            <td>
+                <a href="{% url 'students:edit_enrollment' enrollment.id %}">Edit</a> |
+                <a href="{% url 'students:delete_enrollment' enrollment.id %}">Delete</a> |
+                <a href="{% url 'students:student_enrollment_detail' enrollment.student.id %}">Details</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{% url 'students:add_enrollment' %}">Add New Enrollment</a>
+{% endblock %}
