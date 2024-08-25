@@ -1,0 +1,25 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h2>Manual Attendance</h2>
+<form method="post">
+    {% csrf_token %}
+    <div>
+        <label for="student_id">Student</label>
+        <select name="student_id" id="student_id">
+            {% for student in students %}
+            <option value="{{ student.id }}">{{ student.user.username }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div>
+        <label for="course_id">Course</label>
+        <select name="course_id" id="course_id">
+            {% for course in courses %}
+            <option value="{{ course.id }}">{{ course.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit">Record Attendance</button>
+</form>
+{% endblock %}

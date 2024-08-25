@@ -1,0 +1,29 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h2>Attendance Details for {{ student.user.username }}</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Course</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Lecturer</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for record in attendance_records %}
+        <tr>
+            <td>{{ record.course.name }}</td>
+            <td>{{ record.date }}</td>
+            <td>{{ record.get_status_display }}</td>
+            <td>{{ record.lecturer.username }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">No attendance records found.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
