@@ -1,0 +1,35 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<h2>Exam Attendance List</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Student</th>
+            <th>Exam</th>
+            <th>Status</th>
+            <th>RFID Card</th>
+            <th>Recorded By</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for attendance in attendances %}
+        <tr>
+            <td>{{ attendance.student.name }}</td>
+            <td>{{ attendance.exam.course.name }} - {{ attendance.exam.date }}</td>
+            <td>{{ attendance.get_status_display }}</td>
+            <td>{{ attendance.rfid_card }}</td>
+            <td>{{ attendance.recorded_by.username }}</td>
+            <td>
+                <a href="{% url 'exams:update_exam_attendance' attendance.id %}" class="btn btn-primary">Update</a>
+                <a href="{% url 'exams:delete_exam_attendance' attendance.id %}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this attendance record?');">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="{% url 'exams:add_exam_attendance' %}" class="btn btn-success">Add Exam Attendance</a>
+{% endblock %}
