@@ -1,0 +1,45 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center">RFID Card List</h2>
+    <table class="table table-striped table-bordered mt-4">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Card Number</th>
+                <th>Assigned To</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for rfid_card in rfid_cards %}
+            <tr>
+                <td>{{ rfid_card.id }}</td>
+                <td>{{ rfid_card.card_number }}</td>
+                <td>
+                    {% if rfid_card.student %}
+                        {{ rfid_card.student.user.first_name }} {{ rfid_card.student.user.last_name }} (Student)
+                    {% elif rfid_card.employee %}
+                        {{ rfid_card.employee.user.first_name }} {{ rfid_card.employee.user.last_name }} (Employee)
+                    {% else %}
+                        Unassigned
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'core:update_rfid' rfid_card.id %}" class="btn btn-primary btn-sm">Edit</a>
+                    <a href="{% url 'core:delete_rfid' rfid_card.id %}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="text-center">No RFID cards found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="text-center">
+        <a href="{% url 'core:assign_rfid' %}" class="btn btn-success">Assign New RFID Card</a>
+    </div>
+</div>
+{% endblock content %}

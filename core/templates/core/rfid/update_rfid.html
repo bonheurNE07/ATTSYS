@@ -1,13 +1,15 @@
-{% extends 'base.html'  %}
+{% extends 'core/base.html' %}
 
 {% block content %}
-    <div class="container">
-        <h2>Update RFID Card - {{ rfid_card.card_rfid }}</h2>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-primary">Update</button>
-        </form>
-    </div>
-
-{% endblock %}
+<div class="container mt-4">
+    <h2 class="text-center">Update RFID Card</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary">Update Card</button>
+            <a href="{% url 'core:rfid_list' %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock content %}

@@ -1,0 +1,28 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center text-danger">Delete Employee</h2>
+    <p class="text-center">Are you sure you want to delete the following employee?</p>
+
+    <div class="card mt-4">
+        <div class="card-body">
+            <h5 class="card-title">{{ employee.first_name }} {{ employee.last_name }}</h5>
+            <p class="card-text">
+                <strong>Email:</strong> {{ employee.email }}<br>
+                <strong>Department:</strong> {{ employee.department.name }}<br>
+                <strong>Position:</strong> {{ employee.position }}<br>
+            </p>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Delete</button>
+            <a href="{% url 'core:employee_list' %}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock content %}
+
