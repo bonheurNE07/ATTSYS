@@ -1,0 +1,75 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center">Lecturer Dashboard</h2>
+
+    <div class="row">
+        <!-- Assigned Courses -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Assigned Courses</h5>
+                    <ul class="list-group">
+                        {% for course in courses %}
+                            <li class="list-group-item">
+                                {{ course.name }} - {{ course.code }}
+                            </li>
+                        {% empty %}
+                            <li class="list-group-item">No courses assigned</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upcoming Exams -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Upcoming Exams</h5>
+                    <ul class="list-group">
+                        {% for exam in upcoming_exams %}
+                            <li class="list-group-item">
+                                {{ exam.course.name }} - {{ exam.date|date:"F d, Y" }} 
+                            </li>
+                        {% empty %}
+                            <li class="list-group-item">No upcoming exams</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <!-- Student Performance (Placeholder) -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Student Performance</h5>
+                    <p class="card-text">Student performance data is currently under development.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Attendance Records -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Attendance Records</h5>
+                    <ul class="list-group">
+                        {% for record in attendance_records %}
+                            <li class="list-group-item">
+                                {{ record.course.name }} - {{ record.student.get_full_name }} - {{ record.status }} ({{ record.date|date:"F d, Y" }})
+                            </li>
+                        {% empty %}
+                            <li class="list-group-item">No attendance records</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

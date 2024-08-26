@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Welcome, {{ user.first_name }}</h1>
+
+    {% if user.user_type == 1 %} <!-- HOD Dashboard -->
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5>Total Employees</h5>
+                    <p>{{ total_employees }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5>Total Students</h5>
+                    <p>{{ total_students }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5>Total Courses</h5>
+                    <p>{{ total_courses }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5>Today's Attendance</h5>
+                    <p>{{ today_attendance }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% elif user.user_type == 2 %} <!-- Lecturer Dashboard -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5>Assigned Courses</h5>
+                    <ul>
+                        {% for course in assigned_courses %}
+                        <li>{{ course.name }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5>Today's Attendance</h5>
+                    <p>{{ today_attendance }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock content %}

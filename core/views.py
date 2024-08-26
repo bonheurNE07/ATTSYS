@@ -6,9 +6,12 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
+from django.utils import timezone
 
-from .forms import StudentForm, EmployeeForm, RFIDCardForm
-from .models import Student, Employee, User, RFIDCard 
+from .forms import StudentForm, RFIDCardForm
+from .models import Student, User, RFIDCard 
+from employees.models import Employee
+from employees.forms import EmployeeForm
 from courses.models import Course
 from exams.models import Exam
 from attendance.models import AttendanceRecord
@@ -57,6 +60,7 @@ def logout_view(request):
     logout(request)
     return redirect('core:login')
 
+
 # Student Management Views (Create, Update and Delete)
 def create_student(request):
     if request.method == 'POST':
@@ -99,6 +103,8 @@ def student_list(request):
     students = Student.objects.all()
     return render(request, 'core/student/student_list.html', {'students': students})
          
+
+
 # Employee Management views (Create, Upate, Delete)
 
 # Employee Management Create View
@@ -130,7 +136,7 @@ def update_employee(request, pk):
 
 # Employee Management Delete View
 @login_required
-def delet_employee(request, pk):
+def delete_employee(request, pk):
     employee = get_object_or_404(Employee, pk=pk)
     if request.method == 'POST':
         employee.delete()
@@ -142,6 +148,8 @@ def delet_employee(request, pk):
 def employee_list(request):
     employees = Employee.objects.all()
     return render(request, 'core/employee/employee_list.html', {'employees': employees})
+
+
 
 # RFID Card Management Views (Assign, Update, Delete)
 
@@ -189,6 +197,7 @@ def delete_rfid(request, pk):
 def rfid_list(request):
     rfid_cards = RFIDCard.objects.all()
     return render(request, 'core/rfid/rfid_list.html', {'rfid_cards': rfid_cards})
+
 
 # HOD views for the dashboard
 @login_required
@@ -251,12 +260,35 @@ def lecturer_dashboard(request):
     }
     return render(request, 'core/dashboard/lecturer_dashboard.html', context)
 
+
 @login_required
 def home(request):
+    context = {}
+
     if request.user.user_type == 1:  # HOD
-        return redirect('core:hod_dashboard')
+        # Total employees in the HOD's department
+        context['total_employees'] = Employee.objects.filter(department=request.user.department).count()
+
+        # Total students in the HOD's department
+        context['total_students'] = Student.objects.filter(department=request.user.department).count()
+
+        # Total courses in the HOD's department
+        context['total_courses'] = Course.objects.filter(lecturer__in=User.objects.filter(department=request.user.department)).count()
+
+        # Today's attendance records for the HOD's department
+        context['today_attendance'] = AttendanceRecord.objects.filter(
+            course__lecturer__in=User.objects.filter(department=request.user.department),
+            date=timezone.now().date()
+        ).count()
+
     elif request.user.user_type == 2:  # Lecturer
-        return redirect('core:lecturer_dashboard')
-    else:
-        # Redirect students or employees to their respective dashboards or a default page
-        return render(request, 'core/home.html')
+        # Assigned courses for the lecturer
+        context['assigned_courses'] = Course.objects.filter(lecturer=request.user)
+
+        # Today's attendance records for the lecturer's courses
+        context['today_attendance'] = AttendanceRecord.objects.filter(
+            course__lecturer=request.user,
+            date=timezone.now().date()
+        ).count()
+
+    return render(request, 'core/home.html', context)

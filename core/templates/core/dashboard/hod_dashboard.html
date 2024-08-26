@@ -1,0 +1,77 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center">HOD Dashboard</h2>
+
+    <div class="row">
+        <!-- Employee Statistics -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Employees in Department</h5>
+                    <p class="card-text display-4">{{ employee_count }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Student Statistics -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Students in Department</h5>
+                    <p class="card-text display-4">{{ student_count }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pending Approvals -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Pending Approvals</h5>
+                    <p class="card-text display-4">{{ pending_approvals }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <!-- Recent Employee Activity -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Recent Employee Activity</h5>
+                    <ul class="list-group">
+                        {% for employee in recent_employees %}
+                            <li class="list-group-item">
+                                {{ employee.user.get_full_name }} - {{ employee.position }} (Joined on {{ employee.date_joined|date:"F d, Y" }})
+                            </li>
+                        {% empty %}
+                            <li class="list-group-item">No recent activities</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Attendance Data -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Attendance Data by Course</h5>
+                    <ul class="list-group">
+                        {% for record in attendance_data %}
+                            <li class="list-group-item">
+                                {{ record.course.name }} - {{ record.status }} ({{ record.date|date:"F d, Y" }})
+                            </li>
+                        {% empty %}
+                            <li class="list-group-item">No attendance records</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
